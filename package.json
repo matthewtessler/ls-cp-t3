@@ -12,6 +12,19 @@
     "express": "~4.15.2",
     "hbs": "~4.0.1",
     "morgan": "~1.8.1",
-    "serve-favicon": "~2.4.2"
-  }
+    "serve-favicon": "~2.4.2",
+    "mysql": "~2.15.0"
+  },
+  "description": "Large Scale Web Applications Course Project - Team 3",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewtessler/ls-cp-t3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthewtessler/ls-cp-t3/issues"
+  },
+  "homepage": "https://github.com/matthewtessler/ls-cp-t3#readme"
 }
