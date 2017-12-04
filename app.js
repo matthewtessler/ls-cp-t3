@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var db = require('./db.js');
 
 var app = express();
 
@@ -44,3 +45,10 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+var entry = {
+	username: "Wazir1216",
+	email: "w@w1.com"
+};
+db.updateRanking("Wazir1215", 10);
+app.listen(3000);

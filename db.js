@@ -26,7 +26,6 @@ var addUser = function(entry){
 	//Entry should be an object that has the fields: username, email, location (optional)
 	entry.joinDate = (new Date()).toISOString().substring(0, 10);
 	var connection = connect();
-	console.log(entry.username);
 	if (connection){
 		//If username and email do not already exist, add new User to user table
 		connection.query('INSERT INTO user SET ?', entry, function(err, result) {
