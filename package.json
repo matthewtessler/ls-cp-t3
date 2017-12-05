@@ -13,12 +13,9 @@
     "hbs": "~4.0.1",
     "morgan": "~1.8.1",
     "mysql": "~2.15.0",
-<<<<<<< HEAD
-    "serve-favicon": "~2.4.2"
-=======
+
     "serve-favicon": "~2.4.2",
     "socket.io": "^2.0.4"
->>>>>>> 7e5f8fd7f6558bcd44a794e6f956d6bad6e56b5c
   },
   "description": "Large Scale Web Applications Course Project - Team 3",
   "main": "app.js",
