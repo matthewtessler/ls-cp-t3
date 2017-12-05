@@ -11,6 +11,8 @@
     "debug": "~2.6.3",
     "express": "^4.15.5",
     "hbs": "~4.0.1",
+    "memcache": "^0.3.0",
+    "memcached": "^2.2.2",
     "morgan": "~1.8.1",
     "mysql": "~2.15.0",
     "serve-favicon": "~2.4.2",

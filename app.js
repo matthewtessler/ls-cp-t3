@@ -56,6 +56,4 @@ var entry = {
 };
 //db.addUser(entry);
 
-app.listen(3000);
-
 module.exports = {app: app, server: server};

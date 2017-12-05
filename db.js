@@ -134,6 +134,90 @@ var displayProfile = function(email, display){
 	connection.end();
 }
 
+var getOnlineUsers = function(display){
+	var connection = connect();
+	if (connection){
+		connection.query('SELECT * FROM rankings WHERE status = "online"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				display(result);
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
+//TEMP FUNCTIONS
+var createBoard = function(){
+	var connection = connect();
+	if (connection){
+		connection.query('INSERT INTO gameState VALUES 0, 0, "000000000"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result){
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
+var getBoard = function(process){
+	var connection = connect();
+	if (connection){
+		connection.query('SELECT * FROM gameState WHERE gameId=0', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				process(result);
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+var setBoard = function(info, process){
+	var connection = connect();
+	if (connection){
+		connection.query('UPDATE gameState SET turn ='+ info.turn+', board="'+entry.board+'"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				process(result);
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+//END OF TEMP FUNCTIONS
+
 
 //Function to update Ranking for a single User
 var updateRanking = function(username,rank){
@@ -238,9 +322,13 @@ module.exports = {
   addUserRanking: addUserRanking,
   getUserByUsername: getUserByUsername,
   getUserByEmail: getUserByEmail,
+  getOnlineUsers: getOnlineUsers,
   displayProfile: displayProfile,
   updateTotals: updateTotals,
   updateGamesPlayed: updateGamesPlayed,
   updateGamesWon: updateGamesWon,
-  updateRanking: updateRanking
+  updateRanking: updateRanking,
+  createBoard: createBoard,
+  getBoard: getBoard,
+  setBoard: setBoard
 };

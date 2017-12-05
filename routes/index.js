@@ -1,19 +1,46 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../db.js');
+var Memcached = require('memcached');
+
+//Memcached Code ======================================================================
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.io.on('connection', function(socket){
+	var info = {
+	user1: "Wazir",
+	user2: "Matthew",
+	board: ['X','O','X']
+	}
+	//Set a key
+	console.log("BEGIN");
+	var memcached = new Memcached('largescalecache.ql9eg3.0001.use1.cache.amazonaws.com:11211', {timeout:5000});
+
+	memcached.set('game1', "info", 200000, function (err) { console.log("TEST", err);});
+	console.log("END");
+
+	//Get value from key
+	// memcached.get('game1', function (err, data) {
+	//   console.log(data);
+	// });
+	/*
+	res.io.on('connection', function(socket){ // testing s.io
 	  console.log('a user connected');
-	});
+	});*/
 	if (req.cookies.status=="loggedIn"){
 		//Page to display if logged in
-		var username;
 		db.displayProfile(req.cookies.email,
 			function(result){
-				//username = result[0].username;
-				res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: result[0].username});
+				var username = result[0].username;
+				db.getOnlineUsers(function(result){
+					var onliners = []
+					for(var i=0; i < result.length;i++) {
+						if( result[i].username !== username) {
+							onliners.push(result[i]);
+						}
+					}
+					res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: username, onliners:onliners});
+				});
 			});
 		
 	}
@@ -77,6 +104,9 @@ router.post('/signup', function(req,res,next){
     );
 
 });
+
+
+	
 
 
 
