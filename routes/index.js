@@ -53,22 +53,22 @@ router.get('/', function(req, res, next) {
 
 //POST home page to check if account exists
 router.post('/', function(req, res, next) {
-	res.io.on('connection', function(socket){
-	  console.log('a user connected');
-	});
-
-	db.getUserByEmail(req.cookies.email, function(){
-		//Function to call if User is in the DB already
-		res.cookie('status',"loggedIn");
-		res.redirect('/');
-	},
-	function(){
-		//Function to call if we need to create a new account for the user
-		//res.send("False");
-		res.redirect('/signin');
-	});
-	
-});
+            res.io.on('connection', function(socket){
+                      console.log('a user connected');
+                      });
+            
+            db.getUserByEmail(req.cookies.email, function(){
+                              //Function to call if User is in the DB already
+                              res.cookie('status',"loggedIn");
+                              res.redirect('/');
+                              },
+                              function(){
+                              //Function to call if we need to create a new account for the user
+                              //res.send("False");
+                              res.redirect('/signin');
+                              });
+            
+            });
 
 router.get('/game', function(req,res,next) {
 	res.io.on("connection", function(socket){
@@ -107,7 +107,7 @@ router.post('/signup', function(req,res,next){
     	},
     	function(){
     		//Username already exists
-    		res.render('signin_prompt', { title: 'Tic-Tac-Toe', error: true });
+    		//res.render('signin_prompt', { title: 'Tic-Tac-Toe', error: true });
 
     	}
     );

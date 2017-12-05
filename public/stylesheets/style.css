@@ -1,6 +1,8 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    width: 100%;
+    text-align:center;
 }
 
 a {
@@ -11,4 +13,19 @@ td {
   width: 50px;
   height: 50px;
   border: 1px solid black;
+}
+
+#profile_badge{
+   position:absolute;
+   top:0;
+   right:0;
+}
+#profile_pic {
+    float:left;
+    width:30%;
+    border-radius: 50%;
+}
+#profile_name {
+    float:right;
+    width=70%;
 }

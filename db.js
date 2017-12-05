@@ -100,10 +100,10 @@ var getUserByEmail = function(email, redirect, makeAcct){
 				//Error Handling Here (ie if Username not found)
 			}
 			if (result.length>0){
-				redirect();
+				redirect(); 
 			}
 			else{
-				makeAcct();
+				makeAcct(); 
 			}
 		});
 	}
@@ -201,7 +201,7 @@ var getBoard = function(process){
 var setBoard = function(info, process){
 	var connection = connect();
 	if (connection){
-		connection.query('UPDATE gameState SET turn ='+ info.turn+', board="'+entry.board+'"', function(err, result) {
+		connection.query('UPDATE gameState SET turn ='+ info.turn+', board="'+info.board+'"', function(err, result) {
 			if (err){
 				//Error Handling Here (ie if Username not found)
 			}
