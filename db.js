@@ -155,6 +155,68 @@ var getOnlineUsers = function(display){
 	connection.end();
 }
 
+//TEMP FUNCTIONS
+var createBoard = function(){
+	var connection = connect();
+	if (connection){
+		connection.query('INSERT INTO gameState VALUES 0, 0, "000000000"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
+var getBoard = function(process){
+	var connection = connect();
+	if (connection){
+		connection.query('SELECT * FROM gameState WHERE gameId=0', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				process(result);
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+var setBoard = function(info, process){
+	var connection = connect();
+	if (connection){
+		connection.query('UPDATE gameState SET turn ='+ info.turn+', board="'+entry.board+'"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				process(result);
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+//END OF TEMP FUNCTIONS
 
 
 //Function to update Ranking for a single User
@@ -265,5 +327,8 @@ module.exports = {
   updateTotals: updateTotals,
   updateGamesPlayed: updateGamesPlayed,
   updateGamesWon: updateGamesWon,
-  updateRanking: updateRanking
+  updateRanking: updateRanking,
+  createBoard: createBoard,
+  getBoard: getBoard,
+  setBoard: setBoard
 };
