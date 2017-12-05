@@ -4,9 +4,10 @@ var db = require('../db.js');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	res.io.on('connection', function(socket){
+	/*
+	res.io.on('connection', function(socket){ // testing s.io
 	  console.log('a user connected');
-	});
+	});*/
 	if (req.cookies.status=="loggedIn"){
 		//Page to display if logged in
 		var username;
