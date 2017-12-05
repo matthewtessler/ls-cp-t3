@@ -4,4 +4,9 @@ function onSignIn(googleUser) {
   console.log('Name: ' + profile.getName());
   console.log('Image URL: ' + profile.getImageUrl());
   console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "./", true);
+  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+  xhr.send('email='+ profile.getEmail());
 }
