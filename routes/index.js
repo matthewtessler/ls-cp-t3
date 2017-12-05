@@ -7,23 +7,38 @@ router.get('/', function(req, res, next) {
 	res.io.on('connection', function(socket){
 	  console.log('a user connected');
 	});
- 	res.render('index', { title: 'Tic-Tac-Toe' });
+	if (req.cookies.status=="loggedIn"){
+		//Page to display if logged in
+		var username;
+		db.displayProfile(req.cookies.email,
+			function(result){
+				//username = result[0].username;
+				res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: result[0].username});
+			});
+		
+	}
+ 	else{
+ 		//Page to display if not logged in
+ 		console.log(req.cookies.status);
+ 		res.render('index', { title: 'Tic-Tac-Toe'});
+ 	}
 });
 
-/* POST home page to check if account exist*/
+//POST home page to check if account exists
 router.post('/', function(req, res, next) {
 	res.io.on('connection', function(socket){
 	  console.log('a user connected');
 	});
 
-	db.getUserByEmail(req.body.email, function(){
+	db.getUserByEmail(req.cookies.email, function(){
 		//Function to call if User is in the DB already
-		res.render('index', { title: 'Tic-Tac-Toe' });
+		res.cookie('status',"loggedIn");
+		res.redirect('/');
 	},
 	function(){
 		//Function to call if we need to create a new account for the user
-		console.log("TEST");
-		res.render('signin_prompt', { title: 'Tic-Tac-Toe' });
+		//res.send("False");
+		res.redirect('/signin');
 	});
 	
 });
@@ -36,6 +51,33 @@ router.get('/game', function(req,res,next) {
 router.get('/signin', function(req,res,next){
     res.render('signin_prompt', {title:'Tic-Tac-Toe'});
 });
+
+//SignUp for new users
+router.post('/signup', function(req,res,next){
+    var entry = {
+    	username: req.body.username,
+    	email: req.cookies.email,
+    }
+    if (req.body.location){
+    	entry.location = req.body.location;
+    }
+    db.addUser(entry,
+    	function(){
+    		//Successful Account Creation
+    		res.cookie('status',"loggedIn");
+    		db.addUserRanking(entry);
+    		res.redirect('/');
+
+    	},
+    	function(){
+    		//Username already exists
+    		res.render('signin_prompt', { title: 'Tic-Tac-Toe', error: true });
+
+    	}
+    );
+
+});
+
 
 
 module.exports = router;

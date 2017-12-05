@@ -22,8 +22,8 @@ var connect = function(){
 }
 
 
-//Function to Add a new User to the DB
-var addUser = function(entry){
+//Function to Add a new User to the DB (user table)
+var addUser = function(entry, Success, Error){
 	//Entry should be an object that has the fields: username, email, location (optional)
 	entry.joinDate = (new Date()).toISOString().substring(0, 10);
 	var connection = connect();
@@ -32,12 +32,27 @@ var addUser = function(entry){
 		connection.query('INSERT INTO user SET ?', entry, function(err, result) {
 			if (err){
 				//Error Handling Here (ie if Username or Email exist in DB already)
+				Error();
 			}
 			else{
 				//Account Creation Successful
+				Success();
 			}
 		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
 
+	connection.end();
+}
+
+//Function to Add a new User to the DB (ranking table)
+var addUserRanking = function(entry){
+	//Entry should be an object that has the fields: username, email, location (optional)
+	entry.joinDate = (new Date()).toISOString().substring(0, 10);
+	var connection = connect();
+	if (connection){
 		//Also add entry to Ranking table, default value as Highest Rank + 1
 		connection.query('INSERT INTO rankings (username,rank) SELECT "'+entry.username+'" AS username, MAX(rank)+1 FROM rankings', function(err, result) {
 			if (err){
@@ -89,6 +104,27 @@ var getUserByEmail = function(email, redirect, makeAcct){
 			}
 			else{
 				makeAcct();
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
+var displayProfile = function(email, display){
+	var connection = connect();
+	if (connection){
+		connection.query('SELECT * FROM user WHERE email = "'+email+'"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				display(result);
+			}
+			else{
+				
 			}
 		});
 	}
@@ -199,8 +235,10 @@ var updateGamesWon = function(result){
 module.exports = {
   connect: connect,
   addUser: addUser,
+  addUserRanking: addUserRanking,
   getUserByUsername: getUserByUsername,
   getUserByEmail: getUserByEmail,
+  displayProfile: displayProfile,
   updateTotals: updateTotals,
   updateGamesPlayed: updateGamesPlayed,
   updateGamesWon: updateGamesWon,
