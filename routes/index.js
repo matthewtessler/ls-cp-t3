@@ -35,7 +35,9 @@ router.get('/', function(req, res, next) {
 				db.getOnlineUsers(function(result){
 					var onliners = []
 					for(var i=0; i < result.length;i++) {
-						onliners.push(result[i].username);
+						if( result[i].username !== username) {
+							onliners.push(result[i]);
+						}
 					}
 					res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: username, onliners:onliners});
 				});
