@@ -12,8 +12,15 @@ router.get('/', function(req, res, next) {
 		//Page to display if logged in
 		db.displayProfile(req.cookies.email,
 			function(result){
-				//username = result[0].username;
-				res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: result[0].username});
+				var username = result[0].username;
+				db.getOnlineUsers(function(result){
+					var onliners = []
+					for(var i=0; i < result.length;i++) {
+						onliners.push(result[i].username);
+					}
+					console.log(onliners);
+					res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: username, onliners:onliners});
+				});
 			});
 		
 	}

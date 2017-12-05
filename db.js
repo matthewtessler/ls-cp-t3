@@ -137,7 +137,7 @@ var displayProfile = function(email, display){
 var getOnlineUsers = function(display){
 	var connection = connect();
 	if (connection){
-		connection.query('SELECT * FROM ranking WHERE status = "online"', function(err, result) {
+		connection.query('SELECT * FROM rankings WHERE status = "online"', function(err, result) {
 			if (err){
 				//Error Handling Here (ie if Username not found)
 			}
