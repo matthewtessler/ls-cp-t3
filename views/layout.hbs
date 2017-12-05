@@ -23,6 +23,24 @@
   }
 </script>
       
+    <a id='signOutBtn' href="#" onclick="signOut();">Sign out</a>
+    <script>
+      window.onload= function(){
+        //Hide sign out if not logged in
+        if (!gapi.auth2.getAuthInstance().isSignedIn.get()){
+          //document.getElementById('signOutBtn').style.display='none';
+        }
+      }
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+          document.cookie = "status=loggedOut";
+          window.location.href="/";
+        });
+      }
+    </script>
+          
     {{{body}}}
     <script src="/socket.io/socket.io.js"></script>
     <script>
