@@ -74,7 +74,13 @@ router.get('/game', function(req,res,next) {
 	res.io.on("connection", function(socket){
 		console.log("connected");
 		socket.on("emitBoard", function(data){
-			console.log(data); // the tile number is in here
+			console.log(data);
+			db.setBoard({turn:data.turn, board:data.board}, function() {
+				db.getBoard(function(result) {
+					console.log(result);
+				});
+			});
+
 		});
 	});
 	db.getBoard(function(result) {

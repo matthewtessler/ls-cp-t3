@@ -1,7 +1,7 @@
 var currentBoard = $("#invisiboard").html();
 for (var i =0; i < currentBoard.length ;i++) {
 	if (currentBoard[i] !== "0") {
-		var id = (i+1).toString();
+		var id = (i).toString();
 		$("#" + id).html(currentBoard[i]);
 	}
 }
@@ -19,8 +19,13 @@ $("#game-table").click(function(){
 			console.log("could not get player turn");
 		}
 		var board = currentBoard.substring(0, event.target.id) + player_turn + currentBoard.substring(parseInt(event.target.id)+1);
-		console.log(board);
-		socket.emit("emitBoard", {board:board});
+		
+		if (player_turn == "X") {
+			socket.emit("emitBoard", {board:board, turn:1});
+		}
+		else {
+			socket.emit("emitBoard", {board:board, turn:0})
+		}
 	}
 	
 });
