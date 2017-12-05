@@ -30,4 +30,3 @@ $("#game-table").click(function(){
 	
 });
 
-// make a socket.io function that accepts the board from the server and updates it

@@ -52,6 +52,20 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
 		var socket = io();
+    socket.on("hi", function(data) {
+      console.log(data);
+      for (var i=0; i <data.board.length; i++) {
+        if (data.board[i] != "0") {
+          $("#" + i).html(data.board[i]);
+        }
+      }
+      if(data.turn == "0") {
+        $("#player-turn").html("0");
+      }
+      else {
+        $("#player-turn").html("1");
+      }
+    });
 	</script>
   </body>
 </html>

@@ -205,8 +205,10 @@ var setBoard = function(info, process){
 			if (err){
 				//Error Handling Here (ie if Username not found)
 			}
-			if (result.length>0){
+			else {
 				process(result);
+			}
+			if (result.length>0){
 			}
 			else{
 				

@@ -4,6 +4,7 @@ var db = require('../db.js');
 var Memcached = require('memcached');
 
 //Memcached Code ======================================================================
+db.setBoard({board:"000000000", turn:0}, function(){}); // reset board
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -74,10 +75,12 @@ router.get('/game', function(req,res,next) {
 	res.io.on("connection", function(socket){
 		console.log("connected");
 		socket.on("emitBoard", function(data){
-			console.log(data);
+			//console.log(data);
 			db.setBoard({turn:data.turn, board:data.board}, function() {
+			//	console.log("setting new board");
 				db.getBoard(function(result) {
-					console.log(result);
+				//	console.log("getting new board", result);
+					res.io.emit("hi", result[0]);
 				});
 			});
 
