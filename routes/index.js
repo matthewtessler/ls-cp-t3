@@ -21,6 +21,10 @@ router.post('/', function(req, res, next) {
 
 router.get('/game', function(req,res,next) {
 	res.render('game', {title:'Tic-Tac-Toe'});
-})
+});
+
+router.get('/signin', function(req,res,next){
+    res.render('signin_prompt', {title:'Tic-Tac-Toe'});
+});
 
 module.exports = router;
