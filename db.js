@@ -100,10 +100,10 @@ var getUserByEmail = function(email, redirect, makeAcct){
 				//Error Handling Here (ie if Username not found)
 			}
 			if (result.length>0){
-				redirect; console.log("hi");
+				redirect(); 
 			}
 			else{
-				makeAcct; console.log("bye");
+				makeAcct(); 
 			}
 		});
 	}

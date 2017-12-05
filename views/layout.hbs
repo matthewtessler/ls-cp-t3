@@ -5,12 +5,13 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-      <a id='signOutBtn' href="#" onclick="signOut();">Sign out</a>
+      <a id='signOutBtn' href="#" onclick="signOut();">Sign Out</a>
 <script>
   window.onload= function(){
     //Hide sign out if not logged in
     if (!gapi.auth2.getAuthInstance().isSignedIn.get()){
       //document.getElementById('signOutBtn').style.display='none';
+        document.getElementById('signOutBtn').style.display='block';
     }
   }
   function signOut() {
@@ -19,6 +20,9 @@
       console.log('User signed out.');
       document.cookie = "status=loggedOut";
       window.location.href="/";
+         if(hidden) {
+           document.getElementById('signOutBtn').style.display='none';
+        } 
     });
   }
 </script>

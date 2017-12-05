@@ -71,7 +71,7 @@ router.post('/signup', function(req,res,next){
     	},
     	function(){
     		//Username already exists
-    		res.render('signin_prompt', { title: 'Tic-Tac-Toe', error: true });
+    		//res.render('signin_prompt', { title: 'Tic-Tac-Toe', error: true });
 
     	}
     );
