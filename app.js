@@ -55,6 +55,7 @@ var entry = {
 	email: "w@w1.com"
 };
 db.updateRanking("Wazir1215", 10);
+
 app.listen(3000);
 
 module.exports = {app: app, server: server};
