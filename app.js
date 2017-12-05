@@ -51,10 +51,10 @@ app.use(function(err, req, res, next) {
 
 
 var entry = {
-	username: "Wazir1216",
-	email: "w@w1.com"
+	username: "Wazir1215",
+	email: "war256@nyu.edu"
 };
-db.updateRanking("Wazir1215", 10);
+//db.addUser(entry);
 
 app.listen(3000);
 

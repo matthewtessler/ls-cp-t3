@@ -58,7 +58,7 @@ var addUser = function(entry){
 
 
 //Function to retrieve User info by username
-var getUser = function(username){
+var getUserByUsername = function(username){
 	var connection = connect();
 	if (connection){
 		connection.query('SELECT * FROM user WHERE username = "'+username+'"', function(err, result) {
@@ -67,6 +67,28 @@ var getUser = function(username){
 			}
 			if (result){
 				//User successfully retrieved
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
+//Function to retrieve User info by email
+var getUserByEmail = function(email, redirect, makeAcct){
+	var connection = connect();
+	if (connection){
+		connection.query('SELECT * FROM user WHERE email = "'+email+'"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				redirect();
+			}
+			else{
+				makeAcct();
 			}
 		});
 	}
@@ -177,7 +199,8 @@ var updateGamesWon = function(result){
 module.exports = {
   connect: connect,
   addUser: addUser,
-  getUSer: getUser,
+  getUserByUsername: getUserByUsername,
+  getUserByEmail: getUserByEmail,
   updateTotals: updateTotals,
   updateGamesPlayed: updateGamesPlayed,
   updateGamesWon: updateGamesWon,
