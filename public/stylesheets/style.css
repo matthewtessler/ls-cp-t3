@@ -9,10 +9,31 @@ a {
   color: #00B7FF;
 }
 
+/*
 td {
   width: 50px;
   height: 50px;
   border: 1px solid black;
+}
+*/
+.rankings_table
+{
+    width:100%;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
 }
 
 #profile_badge{
