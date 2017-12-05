@@ -1,19 +1,29 @@
+
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+  crossorigin="anonymous"></script>
+
 <h1>{{title}}</h1>
 <p>Game page</p>
-<table>
+<div style="display:none" id="invisiboard">{{board}}</div>
+<p id="player-turn">{{turn}}</p>
+<table id="game-table">
     <tr id="r1">
-        <td></td>
-        <td></td>
-        <td></td>
+        <td id="0"></td>
+        <td id="1"></td>
+        <td id="2"></td>
     </tr>
     <tr id="r2">
-        <td></td>
-        <td></td>
-        <td></td>
+        <td id="3"></td>
+        <td id="4"></td>
+        <td id="5"></td>
     </tr>
     <tr id="r3">
-        <td></td>
-        <td></td>
-        <td></td>
+        <td id="6"></td>
+        <td id="7"></td>
+        <td id="8"></td>
     </tr>
 </table>
+<script src="javascripts/game.js"></script>
+
