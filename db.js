@@ -159,9 +159,10 @@ var getOnlineUsers = function(display){
 var createBoard = function(){
 	var connection = connect();
 	if (connection){
-		connection.query('INSERT INTO gameState VALUES 0, 0, "000000000"', function(err, result) {
+		connection.query('INSERT INTO gameState VALUES (0, 0, "000000000")', function(err, result) {
 			if (err){
 				//Error Handling Here (ie if Username not found)
+				console.log("error with createBoard yo");
 			}
 			if (result){
 			}
@@ -182,12 +183,13 @@ var getBoard = function(process){
 		connection.query('SELECT * FROM gameState WHERE gameId=0', function(err, result) {
 			if (err){
 				//Error Handling Here (ie if Username not found)
+				console.log("getBoard error yo");
 			}
 			if (result.length>0){
 				process(result);
 			}
 			else{
-				
+				console.log("else no result");
 			}
 		});
 	}
@@ -199,7 +201,7 @@ var getBoard = function(process){
 var setBoard = function(info, process){
 	var connection = connect();
 	if (connection){
-		connection.query('UPDATE gameState SET turn ='+ info.turn+', board="'+entry.board+'"', function(err, result) {
+		connection.query('UPDATE gameState SET turn ='+ info.turn+', board="'+info.board+'"', function(err, result) {
 			if (err){
 				//Error Handling Here (ie if Username not found)
 			}

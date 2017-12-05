@@ -71,7 +71,22 @@ router.post('/', function(req, res, next) {
             });
 
 router.get('/game', function(req,res,next) {
-	res.render('game', {title:'Tic-Tac-Toe'});
+	res.io.on("connection", function(socket){
+		console.log("connected");
+		socket.on("emitBoard", function(data){
+			console.log(data);
+			db.setBoard({turn:data.turn, board:data.board}, function() {
+				db.getBoard(function(result) {
+					console.log(result);
+				});
+			});
+
+		});
+	});
+	db.getBoard(function(result) {
+		console.log(result);
+		res.render('game', {title:'Tic-Tac-Toe', board:result[0].board, turn:result[0].turn});
+	});
 });
 
 
