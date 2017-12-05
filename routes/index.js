@@ -9,7 +9,6 @@ router.get('/', function(req, res, next) {
 	});
 	if (req.cookies.status=="loggedIn"){
 		//Page to display if logged in
-		var username;
 		db.displayProfile(req.cookies.email,
 			function(result){
 				//username = result[0].username;
