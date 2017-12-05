@@ -1,15 +1,17 @@
 <h1>{{title}}</h1>
+<h2>Welcome! Please create a new account:</h2>
 <div id=prompt_page>
-<form action="/action_page.php">
+<form action="/signup" method='post'>
   <div class="container">
-    <label><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
-
-    <label><b>Pick a username</b></label>
-    <input type="username" placeholder="Enter Username" name="" required>
+    <label><b>Pick a username: </b></label>
+    <input type="username" placeholder="Enter Username" name="username" required>
+    {{#if error}}
+    <label style='color:red'>Sorry, this username is already taken!</label>
+    {{/if}}
       
-    <label><b>Where are you playing from?</b></label>
-    <input type="location" placeholder="Enter Location" name="uLocation" required>
+    <br><br>
+    <label><b>Where are you playing from? (optional)</b></label>
+    <input type="location" placeholder="Enter Location" name="location">
       
     <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
 

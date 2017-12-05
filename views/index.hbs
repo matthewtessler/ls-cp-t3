@@ -6,8 +6,17 @@
 </h1>
 
 <p>Welcome to {{title}}</p>
-
+{{#if status}}
+<div class="g-signin2" style='pointer-events:none'></div>
+<h2>Hello {{username}}, how are you doing today?</h2>
+{{else}}
 <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
 <p><a href="">Sign in</a></p>
+
+{{/if}}
+<form action="/" method="POST" id="login">
+</form>
+
+<script src="/scripts/signIn.js"></script>
 
