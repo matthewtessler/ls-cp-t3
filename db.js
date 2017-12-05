@@ -163,7 +163,7 @@ var createBoard = function(){
 			if (err){
 				//Error Handling Here (ie if Username not found)
 			}
-			if (result.length>0){
+			if (result){
 			}
 			else{
 				
