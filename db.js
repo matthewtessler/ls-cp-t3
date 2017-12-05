@@ -134,6 +134,28 @@ var displayProfile = function(email, display){
 	connection.end();
 }
 
+var getOnlineUsers = function(display){
+	var connection = connect();
+	if (connection){
+		connection.query('SELECT * FROM ranking WHERE status = "online"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result.length>0){
+				display(result);
+			}
+			else{
+				
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
+
 
 //Function to update Ranking for a single User
 var updateRanking = function(username,rank){
@@ -238,6 +260,7 @@ module.exports = {
   addUserRanking: addUserRanking,
   getUserByUsername: getUserByUsername,
   getUserByEmail: getUserByEmail,
+  getOnlineUsers: getOnlineUsers,
   displayProfile: displayProfile,
   updateTotals: updateTotals,
   updateGamesPlayed: updateGamesPlayed,
