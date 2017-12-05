@@ -22,8 +22,8 @@ router.post('/', function(req, res, next) {
 	},
 	function(){
 		//Function to call if we need to create a new account for the user
+        res.render('signin_prompt', { title: 'Tic-Tac-Toe' });
 		console.log("TEST");
-		res.render('signin_prompt', { title: 'Tic-Tac-Toe' });
 	});
 	
 });
