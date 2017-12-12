@@ -24,10 +24,6 @@ router.get('/', function(req, res, next) {
 	// memcached.get('game1', function (err, data) {
 	//   console.log(data);
 	// });
-	/*
-	res.io.on('connection', function(socket){ // testing s.io
-	  console.log('a user connected');
-	});*/
 	if (req.cookies.status=="loggedIn"){
 		//Page to display if logged in
 		db.displayProfile(req.cookies.email,
@@ -43,7 +39,7 @@ router.get('/', function(req, res, next) {
 					res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: username, onliners:onliners});
 				});
 			});
-		
+
 	}
  	else{
  		//Page to display if not logged in
@@ -55,9 +51,9 @@ router.get('/', function(req, res, next) {
 //POST home page to check if account exists
 router.post('/', function(req, res, next) {
             res.io.on('connection', function(socket){
-                      console.log('a user connected');
+                      console.log('user / post ->', socket.id);
                       });
-            
+
             db.getUserByEmail(req.cookies.email, function(){
                               //Function to call if User is in the DB already
                               res.cookie('status',"loggedIn");
@@ -68,12 +64,12 @@ router.post('/', function(req, res, next) {
                               //res.send("False");
                               res.redirect('/signin');
                               });
-            
+
             });
 
 router.get('/game', function(req,res,next) {
 	res.io.on("connection", function(socket){
-		console.log("connected");
+		console.log("user /game get ->", socket.id);
 		socket.on("emitBoard", function(data){
 			//console.log(data);
 			db.setBoard({turn:data.turn, board:data.board}, function() {
@@ -124,7 +120,7 @@ router.post('/signup', function(req,res,next){
 });
 
 
-	
+
 
 
 
