@@ -15,15 +15,15 @@ router.get('/', function(req, res, next) {
 	}
 	//Set a key
 	console.log("BEGIN");
-	var memcached = new Memcached('largescalecache.ql9eg3.0001.use1.cache.amazonaws.com:11211', {timeout:5000});
+	var memcached = new Memcached('largescalemem.ql9eg3.0001.use1.cache.amazonaws.com:11211', {timeout:5000});
 
 	memcached.set('game1', "info", 200000, function (err) { console.log("TEST", err);});
 	console.log("END");
 
 	//Get value from key
-	// memcached.get('game1', function (err, data) {
-	//   console.log(data);
-	// });
+	 memcached.get('game1', function (err, data) {
+	   console.log("MEMCAHED SAYS:",data);
+	 });
 	if (req.cookies.status=="loggedIn"){
 		//Page to display if logged in
 		db.displayProfile(req.cookies.email,
