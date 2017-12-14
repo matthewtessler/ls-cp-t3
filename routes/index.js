@@ -2,29 +2,46 @@ var express = require('express');
 var router = express.Router();
 var db = require('../db.js');
 var Memcached = require('memcached');
+var memcached = new Memcached('largescalemem.ql9eg3.0001.use1.cache.amazonaws.com:11211', {timeout:5000});
 
-//Memcached Code ======================================================================
-db.setBoard({board:"000000000", turn:0}, function(){}); // reset board
+
+// this was a quick fix for setting the board in the first place, should be replaced
+// with actually setting the board when a game starts between two users 
+// db.setBoard(board:"000000000", turn:0}, function(){}); // reset board
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	var info = {
-	user1: "Wazir",
-	user2: "Matthew",
-	board: ['X','O','X']
-	}
-	//Set a key
-	console.log("BEGIN");
-	var memcached = new Memcached('largescalemem.ql9eg3.0001.use1.cache.amazonaws.com:11211', {timeout:5000});
-
-	memcached.set('game1', "info", 200000, function (err) { console.log("TEST", err);});
-	console.log("END");
-
-	//Get value from key
-	 memcached.get('game1', function (err, data) {
-	   console.log("MEMCAHED SAYS:",data);
-	 });
 	if (req.cookies.status=="loggedIn"){
+		res.io.on('connection', function(socket) {
+			socket.on("sendEmail", function(data) {
+				console.log(data["email"] + socket.id)
+				// set the memcached key,value here as "email"->"socket.id"
+				memcached.set(data["email"], socket.id, 200000, function (err) { console.log("saved email->socket id to memcached");});
+				memcached.set(socket.id, data["email"], 200000, function(err) { console.log("saved socket id->email to memcached");});
+			});
+
+			socket.on("disconnect", function(socket) {
+				console.log("got disconnect")
+				// get socket.id, delete that key->value in memcached, then use that email to delete the other reverse store
+				memcached.get(socket.id, function(err,data) {
+					if(!err) {
+						console.log("got socket.id->email on disconnect");
+						var email = data
+						memcached.del(email, function(err) {
+							if(!err) {
+	                                        		console.log("delete email->id")
+								memcached.del(socket.id, function(err){
+									if (!err) {
+										console.log("deleted id->email")
+									}
+								});
+							}
+						});
+					}
+				});
+			});
+		});
+
 		//Page to display if logged in
 		db.displayProfile(req.cookies.email,
 			function(result){
@@ -39,7 +56,6 @@ router.get('/', function(req, res, next) {
 					res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: username, onliners:onliners});
 				});
 			});
-
 	}
  	else{
  		//Page to display if not logged in
@@ -55,10 +71,10 @@ router.post('/', function(req, res, next) {
                       });
 
             db.getUserByEmail(req.cookies.email, function(){
-                              //Function to call if User is in the DB already
-                              res.cookie('status',"loggedIn");
-                              res.redirect('/');
-                              },
+            	 //Function to call if User is in the DB already
+                 res.cookie('status',"loggedIn");
+                 res.redirect('/');
+                  },
                               function(){
                               //Function to call if we need to create a new account for the user
                               //res.send("False");
@@ -118,10 +134,6 @@ router.post('/signup', function(req,res,next){
     );
 
 });
-
-
-
-
 
 
 module.exports = router;

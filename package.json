@@ -10,6 +10,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "express": "^4.15.5",
+    "forever": "^0.15.3",
     "hbs": "~4.0.1",
     "memcache": "^0.3.0",
     "memcached": "^2.2.2",

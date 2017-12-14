@@ -16,8 +16,12 @@
 
     auth2 = gapi.auth2.getAuthInstance();
     console.log(auth2.isSignedIn.get()); 
-            if (auth2.isSignedIn.get())
-      document.getElementById('signOutBtn').style.visibility='visible';
+    if (auth2.isSignedIn.get()) {
+	var profile = auth2.currentUser.get().getBasicProfile();
+	document.getElementById('signOutBtn').style.visibility='visible';
+	// emit email here to socket.io, on the back end socket.io will connect email to socket.id
+	socket.emit("sendEmail", {"email":profile.getEmail()}); 
+	}
       })
   });
     
