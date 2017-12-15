@@ -205,6 +205,7 @@ router.post('/signup', function(req,res,next){
     		//Successful Account Creation
     		res.cookie('status',"loggedIn");
     		db.addUserRanking(entry);
+    		db.addUserMatches(entry);
     		res.redirect('/');
 
     	},
