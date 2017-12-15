@@ -269,10 +269,20 @@ var updateRanking = function(username,rank){
 }
 
 //Function to set gameID for a single User
-var updateGameID = function(email,gameID){
+var updateGameID = function(email1,email2,gameID){
 	var connection = connect();
 	if (connection){
-		connection.query('UPDATE user SET gameID = "'+ gameID + '" WHERE email = "' + email+ '"', function(err, result) {
+		connection.query('UPDATE user SET gameID = "'+ gameID + '" WHERE email = "' + email1+ '"', function(err, result) {
+			if (err){
+				console.log(err);
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result){
+				//User successfully retrieved
+			}
+		});
+
+		connection.query('UPDATE user SET gameID = "'+ gameID + '" WHERE email = "' + email2+ '"', function(err, result) {
 			if (err){
 				console.log(err);
 				//Error Handling Here (ie if Username not found)
