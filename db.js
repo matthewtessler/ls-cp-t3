@@ -296,7 +296,7 @@ var updateRanking = function(username,rank){
 var setOpponentSocketID = function(email,oppSocket){
 	var connection = connect();
 	if (connection){
-		connection.query('UPDATE user SET oppSocket = "'+ oppSocket + '"" WHERE email = "' + email+ '"', function(err, result) {
+		connection.query('UPDATE user SET oppSocket = "'+ oppSocket + '" WHERE email = "' + email+ '"', function(err, result) {
 			if (err){
 				console.log(err);
 				//Error Handling Here (ie if Username not found)
