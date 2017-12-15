@@ -22,6 +22,7 @@ var connect = function(){
 }
 
 
+
 //Function to Add a new User to the DB (user table)
 var addUser = function(entry, Success, Error){
 	//Entry should be an object that has the fields: username, email, location (optional)
@@ -46,6 +47,8 @@ var addUser = function(entry, Success, Error){
 
 	connection.end();
 }
+
+
 
 //Function to Add a new User to the DB (ranking table)
 var addUserRanking = function(entry){
@@ -89,6 +92,30 @@ var getUserByUsername = function(username){
 		//There was an error connecting to the server
 	}
 	connection.end();
+}
+
+
+function updateStatus(email,status){
+	var connection = connect();
+	getUserByEmail(email,function(result){
+		var username = result.username;
+		if (connection){
+		connection.query('UPDATE rankings SET status ="'+status+'" WHERE username = "'+username+'"', function(err, result) {
+			if (err){
+				console.err(err);
+			}
+			if (result){
+				//User successfully retrieved
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+
+
+	}, function(){});
 }
 
 //Function to retrieve User info by email
@@ -334,5 +361,6 @@ module.exports = {
   updateRanking: updateRanking,
   createBoard: createBoard,
   getBoard: getBoard,
-  setBoard: setBoard
+  setBoard: setBoard,
+  updateStatus: updateStatus
 };
