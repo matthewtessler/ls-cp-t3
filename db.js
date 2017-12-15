@@ -168,11 +168,8 @@ var getOnlineUsers = function(display){
 			if (err){
 				//Error Handling Here (ie if Username not found)
 			}
-			if (result.length>0){
-				display(result);
-			}
 			else{
-				
+				display(result);
 			}
 		});
 	}
