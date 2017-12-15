@@ -76,15 +76,16 @@ var addUserRanking = function(entry){
 
 
 //Function to retrieve User info by username
-var getUserByUsername = function(username){
+var getUserByUsername = function(username, callback){
 	var connection = connect();
 	if (connection){
 		connection.query('SELECT * FROM user WHERE username = "'+username+'"', function(err, result) {
 			if (err){
 				//Error Handling Here (ie if Username not found)
 			}
-			if (result){
+			else {
 				//User successfully retrieved
+				callback(result);
 			}
 		});
 	}
