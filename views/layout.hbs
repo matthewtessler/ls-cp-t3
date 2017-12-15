@@ -70,6 +70,31 @@
         $("#player-turn").html("1");
       }
     });
+	
+    socket.on("wannaPlay",function(data){
+	if(confirm("Click OK to play a game with " + data.username +". Click CANCEL to decline.") == true) {
+		// send accept function back to server, this will confirm i accept and want to start game
+		// redirect to game page
+		socket.emit("accept",{"idOfChallenger":data.idOfChallenger});
+		window.location.href="http://tictactoemania.com:3000/game";
+			
+	}
+	else {
+		// send decline function back to server, declining the invitation and informing the other user
+		// this will reenable their buttons
+		socket.emit("decline",{"idOfChallenger":data.idOfChallenger});
+	}
+    });
+
+    socket.on("challengeeDeclined", function(data) {
+	console.log("challengee declined, releasing buttons");
+	alert("Challengee declined");
+	document.getElementById("anyBtn").disabled = false;
+    });
+    
+    socket.on("toGame", function(data) {
+	window.location.href="http://tictactoemania.com:3000/game";
+    });
 	</script>
   </body>
 </html>

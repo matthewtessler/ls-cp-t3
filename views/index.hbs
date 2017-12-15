@@ -45,7 +45,7 @@
 	function emitRequest(user) {
 		console.log("sent a play request")
 		document.getElementById("anyBtn").disabled = true;
-		socket.emit("sendRequest",{"requestedUser":user})
+		socket.emit("sendRequest",{"requestedUser":user});
 		
 	}
 </script>

@@ -3,11 +3,7 @@ var router = express.Router();
 var db = require('../db.js');
 var Memcached = require('memcached');
 var memcached = new Memcached('largescalemem.ql9eg3.0001.use1.cache.amazonaws.com:11211', {timeout:5000});
-
-
-// this was a quick fix for setting the board in the first place, should be replaced
-// with actually setting the board when a game starts between two users 
-// db.setBoard(board:"000000000", turn:0}, function(){}); // reset board
+var randomID = require('random-id');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -24,17 +20,66 @@ router.get('/', function(req, res, next) {
 
 			socket.on("sendRequest", function(data) {
 
-				console.log("sendRequest received" + data.requestedUser)
+				console.log("sendRequest received " + data.requestedUser)
+
 
 				// get user email corresponding to username
+				db.getUserByUsername(data.requestedUser, function(result) {
+					console.log("corresponding username is " + result[0].email);
+					memcached.get(result[0].email, function(err,data) {
+						if(!err) {
+							var sendTo = data;
+							memcached.get(sendTo,function(err,data) {
 
-				// use that and correspond it with memcached socket.id
+								// nest this within a db call that gets the username so the email isn't completely exposed
+								db.getUserByEmail(data, function(result) {
+									socket.broadcast.to(sendTo).emit('wannaPlay',{"idOfChallenger":socket.id,"username":result[0].username});
+								},function(result){
+									console.log("could not find corresponding user by email");
+								});
+							});
+						}
+					});
+				});
 
-				// emit event to socket id asking if they want to play with the user
+			});
 
-				// have an event on the client side that handles that
-					// if they do, link to the game and start with an empty board, designate x and o
-					// if they don't, tell old user they don't want to play
+			// the id @ socket.id accepts the request from data.idOfChallenger
+			socket.on("accept", function(data) {
+				console.log(socket.id + " accepted the request from " + data.idOfChallenger);
+				var challengerId = data.idOfChallenger;
+				// generate random key with randomID for this game state, and set an empty board in memcached
+				var id = randomID(10, "aA0");
+				console.log("generated id " + id);
+				memcached.set(id,"000000000",200000,function(){
+
+					// get email of both socket ids through memcached -> for some reason, something's being called twice and they get separate ids
+					memcached.get(socket.id, function(err,data) {
+						challengee = data
+						memcached.get(challengerId, function(err,data) {
+							db.updateGameID(challengee, data,id);
+							if (Math.floor(Math.random() * 2) == 1) {
+								db.updateXO(challengee,"x")
+								db.updateXO(data,"o")
+							}
+							else {
+								db.updateXO(challengee,"o")
+								db.updateXO(data,"x")
+							}
+
+							socket.broadcast.to(challengerId).emit("toGame",{})
+
+						});
+					});
+				});
+
+			});
+
+			// the id @ socket.id declines the request from data.idOfChallenger
+			socket.on("decline", function(data) {
+				console.log(socket.id + " declined the request from " + data.idOfChallenger);
+				socket.broadcast.to(data.idOfChallenger).emit('challengeeDeclined',{"response":"no thanks"});
+
 			});
 
 			socket.on("disconnect", function() {
@@ -104,9 +149,19 @@ router.post('/', function(req, res, next) {
 
             });
 
+// check if the user has a game associated with them for memcached, if they do display that game
+// have the first person pick x or o then the other is the other
 router.get('/game', function(req,res,next) {
-	res.io.on("connection", function(socket){
-		console.log("user /game get ->", socket.id);
+	res.render("game", {title:'Tic-Tac-Toe'});
+	res.io.on("connection", function(socket) {
+
+
+
+
+
+
+	});
+/*	res.io.on("connection", function(socket){
 		socket.on("emitBoard", function(data){
 			//console.log(data);
 			db.setBoard({turn:data.turn, board:data.board}, function() {
@@ -122,7 +177,13 @@ router.get('/game', function(req,res,next) {
 	db.getBoard(function(result) {
 		console.log(result);
 		res.render('game', {title:'Tic-Tac-Toe', board:result[0].board, turn:result[0].turn});
-	});
+	});*/
+	// memcached socket id -> email
+
+		// mysql email -> user object
+			// if user object has a game going on, let them into the game
+
+			// if they don't have a game, redirect to the home page
 });
 
 
