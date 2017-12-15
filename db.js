@@ -272,7 +272,7 @@ var updateRanking = function(username,rank){
 var updateGameID = function(email,gameID){
 	var connection = connect();
 	if (connection){
-		connection.query('UPDATE user SET gameID = '+ gameID + ' WHERE email = "' + email+ '"', function(err, result) {
+		connection.query('UPDATE user SET gameID = "'+ gameID + '"" WHERE email = "' + email+ '"', function(err, result) {
 			if (err){
 				console.log(err);
 				//Error Handling Here (ie if Username not found)
@@ -292,7 +292,7 @@ var updateGameID = function(email,gameID){
 var updateXO = function(email,xo){
 	var connection = connect();
 	if (connection){
-		connection.query('UPDATE user SET xo = '+ xo + ' WHERE email = "' + email+ '"', function(err, result) {
+		connection.query('UPDATE user SET xo = "'+ xo + '"" WHERE email = "' + email+ '"', function(err, result) {
 			if (err){
 				console.log(err);
 				//Error Handling Here (ie if Username not found)
