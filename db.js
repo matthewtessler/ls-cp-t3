@@ -268,6 +268,46 @@ var updateRanking = function(username,rank){
 	connection.end();
 }
 
+//Function to set gameID for a single User
+var updateGameID = function(email,gameID){
+	var connection = connect();
+	if (connection){
+		connection.query('UPDATE user SET gameID = '+ gameID + ' WHERE email = "' + email+ '"', function(err, result) {
+			if (err){
+				console.log(err);
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result){
+				//User successfully retrieved
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
+//Function to set gameID for a single User
+var updateXO = function(email,xo){
+	var connection = connect();
+	if (connection){
+		connection.query('UPDATE user SET xo = '+ xo + ' WHERE email = "' + email+ '"', function(err, result) {
+			if (err){
+				console.log(err);
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result){
+				//User successfully retrieved
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
 
 //Function to update # of games played by a User and their # of wins
 var updateTotals = function(username, score){
@@ -360,5 +400,7 @@ module.exports = {
   createBoard: createBoard,
   getBoard: getBoard,
   setBoard: setBoard,
-  updateStatus: updateStatus
+  updateStatus: updateStatus,
+  updateGameID: updateGameID,
+  updateXO: updateXO
 };
