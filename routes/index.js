@@ -14,19 +14,25 @@ router.get('/', function(req, res, next) {
 	if (req.cookies.status=="loggedIn"){
 		res.io.on('connection', function(socket) {
 			socket.on("sendEmail", function(data) {
-				console.log(data["email"] + socket.id)
 				// set the memcached key,value here as "email"->"socket.id"
-				memcached.set(data["email"], socket.id, 200000, function (err) { console.log("saved email->socket id to memcached");});
-				memcached.set(socket.id, data["email"], 200000, function(err) { console.log("saved socket id->email to memcached");});
+				memcached.set(data["email"], socket.id, 200000, function (err) { console.log("saved email " + data["email"] + "->socket id " + socket.id + " to memcached");});
+				memcached.set(socket.id, data["email"], 200000, function(err) { console.log("saved socket id "+socket.id + "->email " + data["email"] + " to memcached");});
+
+				// update mysql status to logged in
+				db.updateStatus(data["email"],"online")
 			});
 
-			socket.on("disconnect", function(socket) {
-				console.log("got disconnect")
+			socket.on("disconnect", function() {
+				console.log("got disconnect from " + socket.id)
 				// get socket.id, delete that key->value in memcached, then use that email to delete the other reverse store
 				memcached.get(socket.id, function(err,data) {
 					if(!err) {
-						console.log("got socket.id->email on disconnect");
+						console.log("got socket.id " + socket.id + "->email"+ data + " on disconnect");
 						var email = data
+						console.log("email: " + email)
+						// update mysql status to logged out
+ 						db.updateStatus(data,"offline")
+
 						memcached.del(email, function(err) {
 							if(!err) {
 	                                        		console.log("delete email->id")
