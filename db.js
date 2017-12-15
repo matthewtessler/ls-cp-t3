@@ -75,6 +75,30 @@ var addUserRanking = function(entry){
 }
 
 
+//Function to Add a new User to the DB (Matches table)
+var addUserMatches = function(entry){
+	//Entry should be an object that has the fields: username, email, location (optional)
+	var connection = connect();
+	if (connection){
+		//Also add entry to Ranking table, default value as Highest Rank + 1
+		connection.query('INSERT INTO matches (username) VALUES ("'+entry.username+'")', function(err, result) {
+			if (err){
+				console.log(err);
+				//Error Handling Here (ie if Username or Email exist in DB already)
+			}
+			else{
+				//Account Creation Successful
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+
+	connection.end();
+}
+
+
 //Function to retrieve User info by username
 var getUserByUsername = function(username, callback){
 	var connection = connect();
@@ -398,6 +422,7 @@ var updateGamesWon = function(result){
 module.exports = {
   connect: connect,
   addUser: addUser,
+  addUserMatches: addUserMatches,
   addUserRanking: addUserRanking,
   getUserByUsername: getUserByUsername,
   getUserByEmail: getUserByEmail,
