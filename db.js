@@ -292,6 +292,26 @@ var updateRanking = function(username,rank){
 	connection.end();
 }
 
+//Function to update Opponent Socket ID
+var setOpponentSocketID = function(username,oppSocket){
+	var connection = connect();
+	if (connection){
+		connection.query('UPDATE user SET oppSocket = "'+ oppSocket + '"" WHERE username = "' + username+ '"', function(err, result) {
+			if (err){
+				console.log(err);
+				//Error Handling Here (ie if Username not found)
+			}
+			if (result){
+				//User successfully retrieved
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+	connection.end();
+}
+
 //Function to set gameID for a single User
 var updateGameID = function(email1,email2,gameID){
 	var connection = connect();
@@ -437,5 +457,6 @@ module.exports = {
   setBoard: setBoard,
   updateStatus: updateStatus,
   updateGameID: updateGameID,
-  updateXO: updateXO
+  updateXO: updateXO,
+  setOpponentSocketID: setOpponentSocketID
 };
