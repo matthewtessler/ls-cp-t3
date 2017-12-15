@@ -22,6 +22,21 @@ router.get('/', function(req, res, next) {
 				db.updateStatus(data["email"],"online")
 			});
 
+			socket.on("sendRequest", function(data) {
+
+				console.log("sendRequest received" + data.requestedUser)
+
+				// get user email corresponding to username
+
+				// use that and correspond it with memcached socket.id
+
+				// emit event to socket id asking if they want to play with the user
+
+				// have an event on the client side that handles that
+					// if they do, link to the game and start with an empty board, designate x and o
+					// if they don't, tell old user they don't want to play
+			});
+
 			socket.on("disconnect", function() {
 				console.log("got disconnect from " + socket.id)
 				// get socket.id, delete that key->value in memcached, then use that email to delete the other reverse store
