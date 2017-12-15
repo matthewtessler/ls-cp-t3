@@ -154,11 +154,36 @@ router.post('/', function(req, res, next) {
 router.get('/game', function(req,res,next) {
 	res.render("game", {title:'Tic-Tac-Toe'});
 	res.io.on("connection", function(socket) {
+		memcached.get(socket.id, function(err,data) {
+			if (!err) {
+				var userEmail = data;
+				db.getUserByEmail(userEmail, function(result) {
+					if(result[0].gameID){
+						memcached.get(result[0].gameID, function(err,data) {
+							socket.broadcast.to(socket.id).emit("getUserBoardInformation",{board:data,turn:result[0].xo});
+						});
+					}
+					else {
+						socket.broadcast.emit.to(socket.id).emit("getUserBoardInformation",{board:data, turn:"redirect"});
+					}
+				}, function(){});
 
+			}
 
+		});
+		socket.on("emitBoard",function(data) {
+			var boardState = data[board];
+			memcached.get(socket.id,function(err,data) {
+				if (!err) {
+					var userEmail = data;
+					db.getUserByEmail(userEmail,function(result) {
+						memcached.set(result[0].gameID, boardState); 
 
+					}, function(){});
+				}
+			});
 
-
+		});
 
 	});
 /*	res.io.on("connection", function(socket){
