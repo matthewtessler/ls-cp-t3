@@ -58,6 +58,8 @@ router.get('/', function(req, res, next) {
 						challengee = data
 						memcached.get(challengerId, function(err,data) {
 							db.updateGameID(challengee, data,id);
+							db.setOpponentSocketID(challengee, challengerId);
+							db.setOpponentSocketID(data,socket.id);
 							if (Math.floor(Math.random() * 2) == 1) {
 								db.updateXO(challengee,"x")
 								db.updateXO(data,"o")
@@ -154,30 +156,38 @@ router.post('/', function(req, res, next) {
 router.get('/game', function(req,res,next) {
 	res.render("game", {title:'Tic-Tac-Toe'});
 	res.io.on("connection", function(socket) {
-		memcached.get(socket.id, function(err,data) {
-			if (!err) {
-				var userEmail = data;
-				db.getUserByEmail(userEmail, function(result) {
-					if(result[0].gameID){
-						memcached.get(result[0].gameID, function(err,data) {
-							socket.broadcast.to(socket.id).emit("getUserBoardInformation",{board:data,turn:result[0].xo});
-						});
-					}
-					else {
-						socket.broadcast.emit.to(socket.id).emit("getUserBoardInformation",{board:data, turn:"redirect"});
-					}
-				}, function(){});
+		socket.on("pageLoaded", function(data) {
+			console.log("on /game with socket.id " + socket.id);
+			memcached.get(socket.id, function(err,data) {
+				if (!err) {
+					console.log("retrieving user email for socket.id " + socket.id);
+					var userEmail = data;
+					db.getUserByEmail(userEmail, function(result) {
+						console.log("got user information for " + result[0].email);
+						if(result[0].gameID){
+							console.log("sending " + result[0].email + " the board");
+							memcached.get(result[0].gameID, function(err,data) {
+								console.log("retrieved the board from memcached and sending it now");
+								socket.broadcast.to(socket.id).emit("getUserBoardInformation",{board:data,turn:result[0].xo});
+							});
+						}
+						else {
+							socket.broadcast.to(socket.id).emit("getUserBoardInformation",{board:data, turn:"redirect"});
+						}
+					}, function(){});
 
-			}
-
+				}
+		});
 		});
 		socket.on("emitBoard",function(data) {
-			var boardState = data[board];
+			console.log("got emitBoard call " + data.board);
+			var boardState = data.board;
 			memcached.get(socket.id,function(err,data) {
 				if (!err) {
 					var userEmail = data;
 					db.getUserByEmail(userEmail,function(result) {
-						memcached.set(result[0].gameID, boardState); 
+						memcached.set(result[0].gameID, boardState);
+						socket.to(result[0].oppenentSocketID).emit("getUserBoardInformation",{board:boardState,turn:result[0].xo});
 
 					}, function(){});
 				}

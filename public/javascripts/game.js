@@ -1,21 +1,21 @@
+socket.emit("pageLoaded",{});
+
 $("#game-table").click(function(){
 	var currentBoard = "";
-	for (var i =0; i < currentBoard.length; i++) {
-		currentBoard += $("#" + i).html();
-	}
-	if ($("#" + event.target.id).html() == "") {
-		var player_turn = null;
-		if ($("#player-turn").html() == "x") {
-			player_turn = "x";
-		}
-		else if ($("#player-turn").html() == "o") {
-			player_turn = "o";
+	for (var i =0; i < 9; i++) {
+		if ($("#" + i).html() != "") {
+			currentBoard += $("#" + i).html();
 		}
 		else {
-			console.log("could not get player turn");
+			currentBoard += "0";
 		}
+	}
+	console.log("currentBoard before change is " + currentBoard);
+	if ($("#" + event.target.id).html() == "") {
+		console.log("picked an empty spot")
+		var player_turn = $("#player-turn").html();
 		var board = currentBoard.substring(0, event.target.id) + player_turn + currentBoard.substring(parseInt(event.target.id)+1);
-
+		console.log("going to send the board " + board + " from player " + player_turn);
 		socket.emit("emitBoard", {board:board, turn:player_turn});
 	}
 
@@ -26,8 +26,9 @@ socket.on("getUserBoardInformation", function(data) {
 		window.location.href = "http://tictactoemania.com:3000/";
 	}
 	else {
-		document.getElementById("messageToUser").html = "You are " + data[turn];
-		document.getElementById("player-turn").html = data[turn];
+		console.log("setting up board and player-turn with " + data.board + " and " + data.turn);
+		document.getElementById("messageToUser").html = "You are " + data.turn;
+		document.getElementById("player-turn").html = data.turn;
 		var currentBoard = data[board];
 		for (var i = 0; i < currentBoard.length; i++) {
 			if (currentBoard[i] !== "0") {
