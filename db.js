@@ -98,7 +98,7 @@ var getUserByUsername = function(username){
 function updateStatus(email,status){
 	var connection = connect();
 	getUserByEmail(email,function(result){
-		var username = result.username;
+		var username = result[0].username;
 		if (connection){
 		connection.query('UPDATE rankings SET status ="'+status+'" WHERE username = "'+username+'"', function(err, result) {
 			if (err){
