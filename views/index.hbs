@@ -20,12 +20,14 @@
     <table align="center" id="ratings-table">
         <tr>
             <th>Username</th>
-             <th>Rank</th>   
+            <th>Rank</th>
+	    <th>Request to Play</th>  
         </tr>
 	{{#each onliners}}
         <tr>
-            <th>{{this.username}}</th>
-             <th>{{this.rank}}</th>   
+          <th>{{this.username}}</th>
+          <th>{{this.rank}}</th>
+          <th><button id="anyBtn"  onclick="emitRequest('{{this.username}}')">Click to send them a play request.</button></th>
         </tr>
 	{{/each}}
     </table>
@@ -39,4 +41,12 @@
 </form>
 
 <script src="/scripts/signIn.js"></script>
+<script>
+	function emitRequest(user) {
+		console.log("sent a play request")
+		document.getElementById("anyBtn").disabled = true;
+		socket.emit("sendRequest",{"requestedUser":user})
+		
+	}
+</script>
 

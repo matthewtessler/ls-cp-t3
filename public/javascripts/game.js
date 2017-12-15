@@ -19,7 +19,7 @@ $("#game-table").click(function(){
 			console.log("could not get player turn");
 		}
 		var board = currentBoard.substring(0, event.target.id) + player_turn + currentBoard.substring(parseInt(event.target.id)+1);
-		
+
 		if (player_turn == "X") {
 			socket.emit("emitBoard", {board:board, turn:1});
 		}
@@ -27,6 +27,6 @@ $("#game-table").click(function(){
 			socket.emit("emitBoard", {board:board, turn:0})
 		}
 	}
-	
+
 });
 
