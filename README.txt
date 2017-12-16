@@ -19,7 +19,7 @@ Tic-Tac-Toe Mania supports federated login by Google and the relevant code is lo
 Database
 
 Views--------------------------------------------
-•	views/index.hbs: Homepage where the user can sign in with his Google account
+•	views/index.hbs: Homepage where the user can sign in with his Google account. If signed-in, shows online users and their rankings, and the suggested opponents (other 3 users with closest rank to yours). You can challenge online users by clicking the button displayed near their username.
 •	views/game.hbs: Game page where users play Tic-Tac-Toe
 •	views/layout.hbs: Template for all views; Sets up integration with Google API
 •	views/signin_prompt.hbs: Registration page for new users
