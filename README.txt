@@ -27,6 +27,14 @@ Views--------------------------------------------
 -------------------------------------------------
 
 Batch Processing
+
+We use Google Cloud Dataflow SDK to run the batch processing with Java and Eclipse. Google Cloud Platform plugin for Eclipse is required.
+
+•I/O is used to read and write to our MYSQL database on JDBC using the following "org.apache.beam.sdk.io.java.jdbc". Dependencies can be downloaded at "https://jar-download.com/?detail_search=g%3A%22org.apache.beam%22%20AND%20a%3A%22beam-sdks-java-io-jdbc%22&search_type=av&a=beam-sdks-java-io-jdbc"
+•	The code get the scores from the user table, sorts it and updates ranking and suggestions on the database.
+• At the moment it only works when run on local machine.
+
 Real Time Interaction
 
+We are able to send requests to online players, that are not already playing a game, and invite them to play. 
 
