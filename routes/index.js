@@ -119,7 +119,10 @@ router.get('/', function(req, res, next) {
 							onliners.push(result[i]);
 						}
 					}
-					res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: username, onliners:onliners});
+					db.getMatches(username,function(result){
+						res.render('index', { title: 'Tic-Tac-Toe', status: req.cookies.status, username: username, onliners:onliners, matches: result[0]});
+					})
+					
 				});
 			});
 	}

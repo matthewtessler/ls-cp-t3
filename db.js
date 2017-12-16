@@ -438,6 +438,29 @@ var updateGamesWon = function(result){
 	}
 }
 
+//getMatches
+var getMatches = function(username,callback){
+	var connection = connect();
+	if (connection){
+		//Add 1 to total games played
+		connection.query('SELECT * FROM matches WHERE username = "'+username+ '"', function(err, result) {
+			if (err){
+				//Error Handling Here (ie if Username or Email exist)
+			}
+			else{
+				console.log("TEST");
+				callback(result);
+			}
+			if (result){
+				//Callback function goes here to display results
+			}
+		});
+	}
+	else{
+		//There was an error connecting to the server
+	}
+}
+
 
 module.exports = {
   connect: connect,
@@ -458,5 +481,6 @@ module.exports = {
   updateStatus: updateStatus,
   updateGameID: updateGameID,
   updateXO: updateXO,
-  setOpponentSocketID: setOpponentSocketID
+  setOpponentSocketID: setOpponentSocketID,
+  getMatches: getMatches
 };

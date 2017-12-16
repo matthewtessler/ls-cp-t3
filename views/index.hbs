@@ -32,6 +32,15 @@
 	{{/each}}
     </table>
 </ul>
+
+{{#if matches}}
+<p>TEST<p>
+          <p>{{this.match1}}</p>
+          <p>{{this.match2}}</p>
+          <p>{{this.match3}}</p>
+  {{else}}
+          <p>No matches available</p>
+  {{/if}}
 </div>
 {{else}}
 <div class="g-signin2" data-onsuccess="onSignIn" ></div>
